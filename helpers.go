@@ -43,6 +43,7 @@ func (h *Helper) NewCopyButton(onClick func()) *widget.Button {
 }
 
 func (h *Helper) CreateOutputContainer(copyButton *widget.Button, settingsButton *widget.Button) fyne.CanvasObject {
+	// @todo: buttons stay on the text. should be fix.
 	return container.NewStack(
 		outputBox,
 		container.NewStack(
