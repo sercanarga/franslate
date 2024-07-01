@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"os"
+	"runtime"
 )
 
 var (
@@ -31,16 +32,19 @@ func main() {
 	appWindow = app.NewWindow(fmt.Sprintf("%s - %s", appName, appDesc))
 	appWindow.Resize(fyne.NewSize(650, 400))
 
-	appWindow.SetCloseIntercept(func() {
-		appWindow.Hide()
-	})
+	// https://github.com/fyne-io/fyne/issues/3197
+	if runtime.GOOS != "darwin" {
+		appWindow.SetCloseIntercept(func() {
+			appWindow.Hide()
+		})
 
-	if desk, ok := app.(desktop.App); ok {
-		m := fyne.NewMenu(appName,
-			fyne.NewMenuItem("Translate Text", func() {
-				appWindow.Show()
-			}))
-		desk.SetSystemTrayMenu(m)
+		if desk, ok := app.(desktop.App); ok {
+			m := fyne.NewMenu(appName,
+				fyne.NewMenuItem("Translate Text", func() {
+					appWindow.Show()
+				}))
+			desk.SetSystemTrayMenu(m)
+		}
 	}
 
 	inputBox = widget.NewMultiLineEntry()
