@@ -11,6 +11,13 @@ import (
 type Handler struct{}
 
 var internal = &Internal{}
+var service = &Service{}
+
+func (h *Handler) InputBoxChanged(t string) {
+	s := internal.GetSettingsFile()
+	output := service.Translate(s.InputLanguage, s.OutputLanguage, t)
+	fmt.Println(output) //debug
+}
 
 func (h *Handler) NewLanguageSelect(languages []string, defaultLang string, onChange func(string)) *widget.Select {
 	selectWidget := widget.NewSelect(languages, onChange)
