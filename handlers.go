@@ -63,8 +63,9 @@ func (h *Handler) SettingsButtonClick() {
 				HintText: "Enter your Gemini API Key",
 			},
 			{
-				Text:   "Settings:",
-				Widget: settingsFileEntry,
+				Text:     "Settings:",
+				Widget:   settingsFileEntry,
+				HintText: "Not editable",
 			},
 			{
 				Widget: container.NewHBox(
