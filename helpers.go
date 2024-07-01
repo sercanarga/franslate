@@ -42,13 +42,13 @@ func (h *Helper) NewCopyButton(onClick func()) *widget.Button {
 	return copyButton
 }
 
-func (h *Helper) CreateOutputContainer(copyButton *widget.Button) fyne.CanvasObject {
+func (h *Helper) CreateOutputContainer(copyButton *widget.Button, settingsButton *widget.Button) fyne.CanvasObject {
 	return container.NewStack(
 		outputBox,
 		container.NewStack(
 			container.NewVBox(
 				layout.NewSpacer(),
-				container.New(layout.NewHBoxLayout(), layout.NewSpacer(), container.NewPadded(copyButton)),
+				container.New(layout.NewHBoxLayout(), container.NewPadded(settingsButton), layout.NewSpacer(), container.NewPadded(copyButton)),
 			),
 		),
 	)

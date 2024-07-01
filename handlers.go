@@ -1,6 +1,14 @@
 package main
 
-import "fyne.io/fyne/v2/widget"
+import (
+	"errors"
+	"fmt"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/widget"
+	"net/url"
+)
 
 type Handler struct{}
 
@@ -30,5 +38,53 @@ func (h *Handler) ClearInputBox() {
 }
 
 func (h *Handler) CopyOutputToClipboard() {
-	appWindow.Clipboard().SetContent(outputBox.Text)
+	w.Clipboard().SetContent(outputBox.Text)
+}
+
+func (h *Handler) SettingsButtonClick() {
+	settingsWindow := a.NewWindow(fmt.Sprintf("%s - %s", appName, "Settings"))
+	settingsWindow.Resize(fyne.NewSize(450, 200))
+	settingsWindow.CenterOnScreen()
+
+	apiKeyEntry := widget.NewEntry()
+	apiKeyEntry.SetPlaceHolder("AIzaSyBMqGQu_lWIj6dG__yzxzgN3S9yB1Zhgmo")
+
+	settingsFileEntry := widget.NewEntry()
+	settingsFileEntry.Text = "settings.json"
+
+	getApiKeyLink, _ := url.Parse("https://aistudio.google.com/app/apikey")
+	contributeLink, _ := url.Parse("https://github.com/sercanarga/franslateai")
+
+	form := &widget.Form{
+		Items: []*widget.FormItem{
+			{
+				Text:     "API Key:",
+				Widget:   apiKeyEntry,
+				HintText: "Enter your Gemini API Key",
+			},
+			{
+				Text:   "Settings:",
+				Widget: settingsFileEntry,
+			},
+			{
+				Widget: container.NewHBox(
+					widget.NewHyperlink("Get API Key", getApiKeyLink),
+					widget.NewHyperlink("Contribute", contributeLink),
+				),
+			},
+		},
+		OnSubmit: func() {
+			if apiKeyEntry.Text == "" {
+				dialog.ShowError(errors.New("API Key cannot be empty"), settingsWindow)
+				return
+			}
+
+			fmt.Println("API Key:", apiKeyEntry.Text)
+			settingsWindow.Close()
+		},
+		SubmitText: "Save",
+	}
+
+	settingsWindow.SetContent(form)
+	settingsWindow.Show()
 }

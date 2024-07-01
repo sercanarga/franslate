@@ -13,35 +13,36 @@ import (
 )
 
 var (
+	a         fyne.App
+	w         fyne.Window
+	inputBox  *widget.Entry
+	outputBox *widget.Entry
+	handler   = &Handler{}
+	helper    = &Helper{}
+
 	appName   = "FranslateAI"
 	appDesc   = "AI Based Free Translate App"
 	languages = []string{"English", "French", "German", "Spanish", "Turkish"}
-	appWindow fyne.Window
-	inputBox  *widget.Entry
-	outputBox *widget.Entry
-
-	handler = &Handler{}
-	helper  = &Helper{}
 )
 
 func main() {
-	// Set the scale of the app to 1.2
-	os.Setenv("FYNE_SCALE", "1.2")
+	// Set the scale of the app to 1.1
+	os.Setenv("FYNE_SCALE", "1.1")
 
-	app := app.New()
-	appWindow = app.NewWindow(fmt.Sprintf("%s - %s", appName, appDesc))
-	appWindow.Resize(fyne.NewSize(650, 400))
+	a = app.New()
+	w = a.NewWindow(fmt.Sprintf("%s - %s", appName, appDesc))
+	w.Resize(fyne.NewSize(650, 400))
 
 	// https://github.com/fyne-io/fyne/issues/3197
 	if runtime.GOOS != "darwin" {
-		appWindow.SetCloseIntercept(func() {
-			appWindow.Hide()
+		w.SetCloseIntercept(func() {
+			w.Hide()
 		})
 
-		if desk, ok := app.(desktop.App); ok {
+		if desk, ok := a.(desktop.App); ok {
 			m := fyne.NewMenu(appName,
 				fyne.NewMenuItem("Translate Text", func() {
-					appWindow.Show()
+					w.Show()
 				}))
 			desk.SetSystemTrayMenu(m)
 		}
@@ -50,20 +51,24 @@ func main() {
 	inputBox = widget.NewMultiLineEntry()
 	outputBox = widget.NewMultiLineEntry()
 
-	appWindow.SetContent(createUI())
+	w.SetContent(createUI())
 
-	appWindow.Canvas().Focus(inputBox)
+	w.Canvas().Focus(inputBox)
 
-	appWindow.ShowAndRun()
+	w.ShowAndRun()
+
 }
 
 func createUI() fyne.CanvasObject {
 	inputLangSelect := handler.NewLanguageSelect(languages, "English", handler.InputLangChange)
 	outputLangSelect := handler.NewLanguageSelect(languages, "Turkish", handler.OutputLangChange)
 
-	switchButton := widget.NewButtonWithIcon("Switch", theme.ViewRefreshIcon(), func() {
+	switchButton := widget.NewButtonWithIcon("", theme.NewThemedResource(fyne.NewStaticResource("switch-lang.svg", []byte(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" width="1" height="1"><path d="M0 224c0 17.7 14.3 32 32 32s32-14.3 32-32c0-53 43-96 96-96H320v32c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-9.2-9.2-22.9-11.9-34.9-6.9S320 19.1 320 32V64H160C71.6 64 0 135.6 0 224zm512 64c0-17.7-14.3-32-32-32s-32 14.3-32 32c0 53-43 96-96 96H192V352c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V448H352c88.4 0 160-71.6 160-160z"/></svg>`))), func() {
 		handler.SwitchButtonClick(inputLangSelect, outputLangSelect)
 	})
+
+	settingsButton := widget.NewButtonWithIcon("", theme.SettingsIcon(), handler.SettingsButtonClick)
+	settingsButton.Importance = widget.LowImportance
 
 	header := helper.CreateHeader(inputLangSelect, outputLangSelect, switchButton)
 
@@ -75,7 +80,7 @@ func createUI() fyne.CanvasObject {
 
 	outputBox.Disable()
 	copyButton := helper.NewCopyButton(handler.CopyOutputToClipboard)
-	outputContainer := helper.CreateOutputContainer(copyButton)
+	outputContainer := helper.CreateOutputContainer(copyButton, settingsButton)
 
 	return container.NewBorder(header, nil, nil, nil,
 		container.NewGridWithColumns(2, inputContainer, outputContainer),
