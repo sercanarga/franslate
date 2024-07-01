@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 	"os"
 	"runtime"
+	"time"
 )
 
 var (
@@ -20,9 +21,10 @@ var (
 	handler   = &Handler{}
 	helper    = &Helper{}
 
-	appName   = "FranslateAI"
-	appDesc   = "AI Based Free Translate App"
-	languages = []string{"English", "French", "German", "Spanish", "Turkish"}
+	appName    = "FranslateAI"
+	appDesc    = "AI Based Free Translate App"
+	languages  = []string{"English", "French", "German", "Spanish", "Turkish"}
+	inputDelay = 300 * time.Millisecond
 )
 
 func main() {
@@ -73,8 +75,17 @@ func createUI() fyne.CanvasObject {
 
 	header := helper.CreateHeader(inputLangSelect, outputLangSelect, switchButton)
 
+	var inputBoxDelay *time.Timer
 	inputBox.SetPlaceHolder("Enter Text to Translate")
 	inputBox.Wrapping = fyne.TextWrapWord
+	inputBox.OnChanged = func(t string) {
+		if inputBoxDelay != nil {
+			inputBoxDelay.Stop()
+		}
+		inputBoxDelay = time.AfterFunc(inputDelay, func() {
+			handler.InputBoxChanged(t)
+		})
+	}
 
 	clearButton := helper.NewClearButton(handler.ClearInputBox)
 	inputContainer := helper.CreateInputContainer(clearButton)
