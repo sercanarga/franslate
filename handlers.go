@@ -1,16 +1,16 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 	"net/url"
 )
 
 type Handler struct{}
+
+var internal = &Internal{}
 
 func (h *Handler) NewLanguageSelect(languages []string, defaultLang string, onChange func(string)) *widget.Select {
 	selectWidget := widget.NewSelect(languages, onChange)
@@ -76,11 +76,12 @@ func (h *Handler) SettingsButtonClick() {
 		},
 		OnSubmit: func() {
 			if apiKeyEntry.Text == "" {
-				dialog.ShowError(errors.New("API Key cannot be empty"), settingsWindow)
 				return
 			}
 
-			fmt.Println("API Key:", apiKeyEntry.Text)
+			internal.SyncSettingsFile(&Settings{
+				ApiKey: apiKeyEntry.Text,
+			})
 			settingsWindow.Close()
 		},
 		SubmitText: "Save",
