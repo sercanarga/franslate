@@ -19,11 +19,15 @@ func (h *Handler) NewLanguageSelect(languages []string, defaultLang string, onCh
 }
 
 func (h *Handler) InputLangChange(value string) {
-	// Handle input language change
+	internal.SyncSettingsFile(&Settings{
+		InputLanguage: value,
+	})
 }
 
 func (h *Handler) OutputLangChange(value string) {
-	// Handle output language change
+	internal.SyncSettingsFile(&Settings{
+		OutputLanguage: value,
+	})
 }
 
 func (h *Handler) SwitchButtonClick(inputLangSelect, outputLangSelect *widget.Select) {
@@ -31,6 +35,11 @@ func (h *Handler) SwitchButtonClick(inputLangSelect, outputLangSelect *widget.Se
 	outputLang := outputLangSelect.Selected
 	inputLangSelect.SetSelected(outputLang)
 	outputLangSelect.SetSelected(inputLang)
+
+	internal.SyncSettingsFile(&Settings{
+		InputLanguage:  outputLang,
+		OutputLanguage: inputLang,
+	})
 }
 
 func (h *Handler) ClearInputBox() {
@@ -48,9 +57,10 @@ func (h *Handler) SettingsButtonClick() {
 
 	apiKeyEntry := widget.NewEntry()
 	apiKeyEntry.SetPlaceHolder("AIzaSyBMqGQu_lWIj6dG__yzxzgN3S9yB1Zhgmo")
+	apiKeyEntry.Text = internal.GetSettingsFile().ApiKey
 
 	settingsFileEntry := widget.NewEntry()
-	settingsFileEntry.Text = "settings.json"
+	settingsFileEntry.Text = internal.GetDataPath() + "/settings.json"
 
 	getApiKeyLink, _ := url.Parse("https://aistudio.google.com/app/apikey")
 	contributeLink, _ := url.Parse("https://github.com/sercanarga/franslateai")
