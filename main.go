@@ -78,7 +78,7 @@ func createUI() fyne.CanvasObject {
 	clearButton := helper.NewClearButton(handler.ClearInputBox)
 	inputContainer := helper.CreateInputContainer(clearButton)
 
-	outputBox.Disable()
+	outputBox.Wrapping = fyne.TextWrapWord
 	copyButton := helper.NewCopyButton(handler.CopyOutputToClipboard)
 	outputContainer := helper.CreateOutputContainer(copyButton, settingsButton)
 
