@@ -65,7 +65,7 @@ func (h *Handler) SettingsButtonClick() {
 			{
 				Text:     "Settings:",
 				Widget:   settingsFileEntry,
-				HintText: "Not editable",
+				HintText: "Just for information (not editable)",
 			},
 			{
 				Widget: container.NewHBox(
