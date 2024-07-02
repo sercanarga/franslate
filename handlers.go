@@ -70,7 +70,7 @@ func (h *Handler) SettingsButtonClick() {
 	settingsFileEntry.Text = internal.GetDataPath() + "/settings.json"
 
 	getApiKeyLink, _ := url.Parse("https://aistudio.google.com/app/apikey")
-	contributeLink, _ := url.Parse("https://github.com/sercanarga/franslateai")
+	contributeLink, _ := url.Parse("https://github.com/sercanarga/franslate")
 
 	form := &widget.Form{
 		Items: []*widget.FormItem{

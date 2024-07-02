@@ -21,7 +21,7 @@ var (
 	handler   = &Handler{}
 	helper    = &Helper{}
 
-	appName    = "FranslateAI"
+	appName    = "Franslate"
 	appDesc    = "AI Based Free Translate App"
 	languages  = []string{"English", "French", "German", "Spanish", "Turkish"}
 	inputDelay = 300 * time.Millisecond

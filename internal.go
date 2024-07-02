@@ -16,7 +16,7 @@ type Settings struct {
 
 func (i *Internal) GetDataPath() string {
 	p, _ := os.UserConfigDir()
-	return p + "/franslateai"
+	return p + "/franslate"
 }
 
 func (i *Internal) GetSettingsFile() *Settings {
