@@ -14,6 +14,12 @@ Because I got fed up with the ridiculous pricing policies of AI translate tools 
 3. Run the tool and enter your API key
 4. Enter the text you want to translate
 
+## MacOS Issue
+If you are using MacOS and you get an error like `app is damaged and can’t be opened You should move it to the Trash.`, you can fix it by running the following command in the terminal:
+```bash
+xattr -c franslate.app
+```
+
 ## How to build
 1. Clone the repository
 2. Run `go install github.com/fyne-io/fyne-cross@latest`
