@@ -10,6 +10,7 @@ type Internal struct{}
 
 type Settings struct {
 	ApiKey         string `json:"apiKey"`
+	InputDelay     string `json:"inputDelay"`
 	InputLanguage  string `json:"inputLanguage"`
 	OutputLanguage string `json:"outputLanguage"`
 }
@@ -58,6 +59,10 @@ func (i *Internal) SyncSettingsFile(t *Settings) {
 
 		if t.ApiKey != "" {
 			s.ApiKey = t.ApiKey
+		}
+
+		if t.InputDelay != "" {
+			s.InputDelay = t.InputDelay
 		}
 
 		if t.InputLanguage != "" {

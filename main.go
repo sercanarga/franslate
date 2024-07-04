@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 	"os"
 	"runtime"
+	"strconv"
 	"time"
 )
 
@@ -21,10 +22,9 @@ var (
 	handler   = &Handler{}
 	helper    = &Helper{}
 
-	appName    = "Franslate"
-	appDesc    = "AI Based Free Translate App"
-	languages  = []string{"English", "French", "German", "Spanish", "Turkish"}
-	inputDelay = 300 * time.Millisecond
+	appName   = "Franslate"
+	appDesc   = "AI Based Free Translate App"
+	languages = []string{"English", "French", "German", "Spanish", "Turkish"}
 )
 
 func main() {
@@ -63,6 +63,12 @@ func main() {
 
 func createUI() fyne.CanvasObject {
 	currentSettings := internal.GetSettingsFile()
+
+	inputDelay, err := strconv.Atoi(currentSettings.InputDelay)
+	if err != nil {
+		inputDelay = 300
+	}
+
 	inputLangSelect := handler.NewLanguageSelect(languages, currentSettings.InputLanguage, handler.InputLangChange)
 	outputLangSelect := handler.NewLanguageSelect(languages, currentSettings.OutputLanguage, handler.OutputLangChange)
 
@@ -82,7 +88,7 @@ func createUI() fyne.CanvasObject {
 		if inputBoxDelay != nil {
 			inputBoxDelay.Stop()
 		}
-		inputBoxDelay = time.AfterFunc(inputDelay, func() {
+		inputBoxDelay = time.AfterFunc(time.Duration(inputDelay)*time.Millisecond, func() {
 			handler.InputBoxChanged(t)
 		})
 	}
