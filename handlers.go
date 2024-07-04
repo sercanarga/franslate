@@ -29,7 +29,7 @@ func (h *Handler) translateHandler() {
 			service.Translate(s.InputLanguage, s.OutputLanguage, s.ApiKey, inputBox.Text)
 		}
 	} else {
-		outputBox.SetText("Please enter your API Key")
+		outputBox.SetText("Please enter your API Key in the settings.")
 	}
 
 }
