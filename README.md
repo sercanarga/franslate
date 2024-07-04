@@ -3,10 +3,10 @@ AI based translation tool for translating text from one language to another. It 
 
 ![last commit](https://badgen.net/github/last-commit/sercanarga/franslate) ![license](https://badgen.net/github/license/sercanarga/franslate)
 
-![Screenshot](https://github.com/sercanarga/franslate/blob/main/screenshot.png?raw=true)
-
 ## Why?
 Because I got fed up with the ridiculous pricing policies of AI translate tools (you know who I'm talking about), so I decided to develop my own solution.
+
+![Screenshot](https://github.com/sercanarga/franslate/blob/main/screenshot.png?raw=true)
 
 ## How to use
 1. Get an API key from [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
