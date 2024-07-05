@@ -1,3 +1,5 @@
+<img src="https://github.com/sercanarga/franslate/blob/main/Icon.png?raw=true" width=180>
+
 # franslate
 AI based translation tool for translating text from one language to another. It uses the Gemini AI API to perform the translation. The tool is built using Golang and the [Fyne](https://github.com/fyne-io/fyne) library.
 
